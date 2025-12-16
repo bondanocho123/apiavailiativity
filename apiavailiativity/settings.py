@@ -32,6 +32,10 @@ ALLOWED_HOSTS = [
     ".railway.app"
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://apiavailiativity-production.up.railway.app",
+]
+
 
 # Application definition
 
