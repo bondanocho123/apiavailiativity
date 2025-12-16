@@ -107,9 +107,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'railway',  # nama database di Railway
         'USER': 'root',
-        'PASSWORD': 'vYIGUUwJZRjordIqCBYQHHkFzHuQWZfx',
-        'HOST': 'centerbeam.proxy.rlwy.net',
-        'PORT': '44159',
+        'PASSWORD': 'AWeBDsCPLJcZIIaWAiTUsLUGWpBInzDs',
+        'HOST': 'hopper.proxy.rlwy.net',
+        'PORT': '22295',
     }
 }
 
