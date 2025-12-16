@@ -34,6 +34,8 @@ class RegisterView(BaseResponseMixin, generics.CreateAPIView):
         user_data = {
             "id": user.id,
             "username": user.username,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
             "email": user.email,
             "refresh": str(refresh),
             "access": str(refresh.access_token),
@@ -72,6 +74,8 @@ class LoginWithEmailView(BaseResponseMixin, generics.GenericAPIView) :
         user_data = {
             "id": user.id,
             "username": user.username,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
             "email": user.email,
             "refresh": str(refresh),
             "access": str(refresh.access_token),
@@ -82,3 +86,37 @@ class LoginWithEmailView(BaseResponseMixin, generics.GenericAPIView) :
             message="Login berhasil",
             code=status.HTTP_200_OK
         )
+    
+class GetUserView(BaseResponseMixin, generics.RetrieveAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        user_data = {
+            "id": user.id,
+            "username": user.username,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "email": user.email,
+        }
+        return self.success_response(
+            data=user_data,
+            message="Data user berhasil diambil",
+            code=status.HTTP_200_OK
+        )
+
+class LogoutView(BaseResponseMixin, generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        refresh_token = request.data.get("refresh")
+
+        if not refresh_token:
+            return self.success_response(message="Refresh token wajib disediakan", code=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            return self.success_response(message="Logout berhasil", code=status.HTTP_200_OK)
+        except Exception as e:
+            return self.success_response(message="Token tidak valid atau sudah kedaluwarsa", code=status.HTTP_400_BAD_REQUEST)
