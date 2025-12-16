@@ -90,16 +90,29 @@ DATABASES = {
     }
 }
 
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'availiativity',
+        'USER': 'bondan',
+        'PASSWORD': '@n@c0nd4',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    }
+}
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'railway',  # nama database di Railway
         'USER': 'root',
-        'PASSWORD': 'jOIccrpMehhpACnUxsPgdDyzCryGlSET',
-        'HOST': 'mainline.proxy.rlwy.net',
-        'PORT': '54211',
+        'PASSWORD': 'vYIGUUwJZRjordIqCBYQHHkFzHuQWZfx',
+        'HOST': 'centerbeam.proxy.rlwy.net',
+        'PORT': '44159',
     }
 }
+
 
 
 # Password validation
