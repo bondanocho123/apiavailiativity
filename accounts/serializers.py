@@ -47,7 +47,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             first_name=validated_data['first_name'],
             last_name=validated_data['last_name']
         )
-        UserProfile.objects.create(user=user, phone_number=validated_data["phone_number"], is_verified=False)
+        UserProfile.objects.create(user=user, phone_number=None, is_verified=False)
 
         user.set_password(validated_data['password'])
         user.save()
