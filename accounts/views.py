@@ -4,7 +4,7 @@ from rest_framework import generics, permissions, status
 from django.contrib.auth.models import User, Group
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-from .serializers import RegisterSerializer, LoginSerializer
+from .serializers import RegisterSerializer, LoginSerializer, UserSerializer
 from .responses import BaseResponseMixin
 
 User = get_user_model()
@@ -89,18 +89,18 @@ class LoginWithEmailView(BaseResponseMixin, generics.GenericAPIView) :
     
 class GetUserView(BaseResponseMixin, generics.RetrieveAPIView):
     permission_classes = [permissions.IsAuthenticated]
+    serializer_class = UserSerializer
 
-    def get(self, request):
-        user = request.user
-        user_data = {
-            "id": user.id,
-            "username": user.username,
-            "first_name": user.first_name,
-            "last_name": user.last_name,
-            "email": user.email,
-        }
+    def get_object(self):
+        return self.request.user
+    
+    def get(self, request, *args, **kwargs):
+        user = self.get_object()
+        serializer = self.get_serializer(user)
+
+        
         return self.success_response(
-            data=user_data,
+            data=serializer.data,
             message="Data user berhasil diambil",
             code=status.HTTP_200_OK
         )

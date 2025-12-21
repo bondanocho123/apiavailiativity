@@ -2,6 +2,12 @@ from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
+from .models import UserProfile
+
+class UserProfileSerializer(serializers.ModelSerializer) :
+    class Meta :
+        model = UserProfile
+        fields = ['phone_number', 'is_verified']
 
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
@@ -41,8 +47,18 @@ class RegisterSerializer(serializers.ModelSerializer):
             first_name=validated_data['first_name'],
             last_name=validated_data['last_name']
         )
+        UserProfile.objects.create(user=user, phone_number=validated_data["phone_number"], is_verified=False)
 
         user.set_password(validated_data['password'])
         user.save()
 
         return user
+
+class UserSerializer(serializers.ModelSerializer):
+    profile = UserProfileSerializer(read_only=True)
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'profile')
+
+
