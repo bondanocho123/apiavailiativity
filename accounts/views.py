@@ -60,7 +60,7 @@ class LoginWithEmailView(BaseResponseMixin, generics.GenericAPIView) :
             return self.success_response(message = "Email dan password wajib diisi", code=status.HTTP_400_BAD_REQUEST)
 
         try:
-            user = User.objects.get(email=email)
+            user = User.objects.select_related('profile').get(email=email)
         except User.DoesNotExist:
             return self.success_response(message = "Email tidak terdaftar", code=status.HTTP_400_BAD_REQUEST)
 
@@ -69,20 +69,14 @@ class LoginWithEmailView(BaseResponseMixin, generics.GenericAPIView) :
             return self.success_response(message = "Password salah", code=status.HTTP_401_UNAUTHORIZED)
 
         refresh = RefreshToken.for_user(user)
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=False)
-        user_data = {
-            "id": user.id,
-            "username": user.username,
-            "first_name": user.first_name,
-            "last_name": user.last_name,
-            "email": user.email,
-            "refresh": str(refresh),
-            "access": str(refresh.access_token),
-        }
+        serializer = LoginSerializer(user)
+        data = serializer.data
+        data["refresh"] = str(refresh)
+        data["access"] = str(refresh.access_token)
+
 
         return self.success_response(
-            data=user_data,
+            data=data,
             message="Login berhasil",
             code=status.HTTP_200_OK
         )

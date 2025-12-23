@@ -9,9 +9,12 @@ class UserProfileSerializer(serializers.ModelSerializer) :
         model = UserProfile
         fields = ['phone_number', 'is_verified']
 
-class LoginSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-    password = serializers.CharField(write_only=True)
+class LoginSerializer(serializers.ModelSerializer):
+    profile = UserProfileSerializer(read_only=True)
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'profile')
 
 class RegisterSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
