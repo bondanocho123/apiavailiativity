@@ -9,12 +9,22 @@ from .models import ProductLinks
 from .responses import BaseResponseMixin
 
 # Create your views here.
-class CreateProductLinkView(generics.CreateAPIView):
+class CreateProductLinkView(BaseResponseMixin, generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = ProductLinkSerializer
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+
+        return self.success_response(
+            data=response.data,
+            message="Produk berhasil ditambahkan",
+            code=status.HTTP_201_CREATED
+        )    
+    
 
 class UpdateProductLinkView(generics.UpdateAPIView):
     permission_classes = [permissions.IsAuthenticated]
