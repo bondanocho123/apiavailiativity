@@ -17,4 +17,6 @@ class ProductLinkSerializer(serializers.ModelSerializer):
         
         if qs.exists():
             raise serializers.ValidationError("Produk dengan URL ini sudah ditambahkan.")
+        
+        return value
             
