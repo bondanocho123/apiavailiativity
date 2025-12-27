@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
-from .models import ProductLinks
+from .models import ProductLinks, ProductImages
 
 class ProductLinkSerializer(serializers.ModelSerializer):
     class Meta:
@@ -20,3 +20,29 @@ class ProductLinkSerializer(serializers.ModelSerializer):
         
         return value
             
+        
+class ProductImageSerializer(serializers.ModelSerializer):
+
+    class Meta :
+        model = ProductImages
+        fields = [
+            "id",
+            "image",
+            "is_primary",
+            "order",
+            "created_at"
+        ]
+
+        read_only_fields = ["created_at"]
+
+    def validate_image(self, value):
+        if value.size > 5*1024 * 1024:
+            raise serializers.ValidationError("Maksimal 5MB")
+        
+        return value
+    
+    def validate_order(self, value) :
+        if value < 0 :
+            raise serializers.ValidationError("Order tidak valid")
+        
+        return value

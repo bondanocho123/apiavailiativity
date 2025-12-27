@@ -135,16 +135,16 @@ DATABASES = {
     }
 }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'railway',  # nama database di Railway
-        'USER': 'root',
-        'PASSWORD': 'AWeBDsCPLJcZIIaWAiTUsLUGWpBInzDs',
-        'HOST': 'hopper.proxy.rlwy.net',
-        'PORT': '22295',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'railway',  # nama database di Railway
+#         'USER': 'root',
+#         'PASSWORD': 'AWeBDsCPLJcZIIaWAiTUsLUGWpBInzDs',
+#         'HOST': 'hopper.proxy.rlwy.net',
+#         'PORT': '22295',
+#     }
+# }
 
 
 
